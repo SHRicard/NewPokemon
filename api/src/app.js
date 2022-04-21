@@ -25,7 +25,7 @@ server.use((req, res, next) => {
   next();
 });
 
-server.use("/api", routes);
+server.use("/api", routes); // url  /api/pokemon or /api/tipos
 
 // Error catching endware.
 server.use((err, req, res, next) => {
