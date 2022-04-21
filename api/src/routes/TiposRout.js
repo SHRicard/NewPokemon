@@ -19,3 +19,4 @@ router.put("/", (req, res, next) => {
 router.delete("/", (req, res, next) => {
   res.send("soy delete /TiposRout");
 });
+module.exports = router;
