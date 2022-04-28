@@ -38,7 +38,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    special_aefense: {
+    special_defense: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

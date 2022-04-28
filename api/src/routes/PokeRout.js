@@ -8,45 +8,48 @@ const { URL_API } = process.env;
 
 const router = Router();
 //Lleno mi base de dato
-router.post("/", async (req, res, next) => {
-  const Exists = "Los Pokemones ya Estas Registrados";
-  const pokeExists = await Pokemon.findAll();
-  if (!pokeExists.length) {
-    const urlApiData = await axios.get(URL_API); // mi primer llamado a la api resultado en urlApiData
-    const urlApiDataTwo = urlApiData.data.results.map((pokeUrl) => pokeUrl.url); // segunda Url
-
-    const pokeInf = await Promise.all(
-      urlApiDataTwo.map((pokeInfo) => axios.get(pokeInfo))
-    );
-
-    let pokeMaps = pokeInf.map((poke) => {
-      let pokeTipos = poke.data.types.map((types) => types.type.name); // tambien los tipo
-      let obj = {
-        id: poke.data.id,
-        name: poke.data.name,
-        life: poke.data.stats[0].base_stat,
-        atack: poke.data.stats[1].base_stat,
-        defensa: poke.data.stats[2].base_stat,
-        speed: poke.data.stats[5].base_stat,
-        height: poke.data.height,
-        weight: poke.data.weight,
-        img: poke.data.sprites.other["official-artwork"].front_default,
-        imgFront:
-          poke.data.sprites.versions["generation-v"]["black-white"].animated
-            .front_default, //fui mas adentro en la api para conseguir el git y no una imagen
-        imgFrontShiny:
-          poke.data.sprites.versions["generation-v"]["black-white"].animated
-            .front_shiny,
-        icons:
-          poke.data.sprites.versions["generation-viii"].icons.front_default, //fui mas adentro en la api para conseguir el git y no una imagen
-
-        //fui mas adentro en la api para conseguir el git y no una imagen
-        tipo: pokeTipos,
-      };
-      return obj;
-    });
-    console.log(pokeMaps);
-    return pokeMaps;
+router.get("/", async (req, res, next) => {
+  try {
+    const Exists = "Los Pokemones ya Estas Registrados";
+    const pokeExists = await Pokemon.findAll();
+    if (!pokeExists.length) {
+      const urlApiData = await axios.get(URL_API); // mi primer llamado a la api resultado en urlApiData
+      console.log("1");
+      const urlApiDataTwo = urlApiData.data.results.map(
+        (pokeUrl) => pokeUrl.url
+      ); // segunda Url
+      console.log("2");
+      const pokeInf = await Promise.all(
+        urlApiDataTwo.map((pokeInfo) => axios.get(pokeInfo))
+      );
+      console.log("3");
+      let pokeMap = pokeInf.map((poke) => {
+        let tipo = poke.types.data.map((types) => types.type.name);
+        // console.log(poke.types.data);
+        console.log("4");
+        console.log("5");
+        let pokeJson = {
+          id: poke.data.id,
+          name: poke.data.name,
+          height: poke.data.height,
+          weight: poke.data.weight,
+          hp: poke.stats[0].base_stat,
+          attack: poke.stats[1].base_stat,
+          defense: poke.stats[2].base_stat,
+          special_attack: poke.stats[3].base_stat,
+          special_defense: poke.stats[4].base_stat,
+          speed: poke.stats[5].base_stat,
+          front_defaul: poke.data.sprites.front_default,
+          front_shiny: poke.data.sprites.front_shiny,
+          Tipos: tipo,
+        };
+        console.log("6");
+        return pokeJson;
+      });
+      console.log(pokeMap);
+    }
+  } catch (err) {
+    console.log(err);
   }
 });
 
