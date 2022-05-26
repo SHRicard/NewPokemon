@@ -18,34 +18,34 @@ router.get("/", async (req, res, next) => {
       const urlApiDataTwo = urlApiData.data.results.map(
         (pokeUrl) => pokeUrl.url
       ); // segunda Url
-      console.log("2");
       const pokeInf = await Promise.all(
         urlApiDataTwo.map((pokeInfo) => axios.get(pokeInfo))
       );
+      console.log(pokeInf);
+
       console.log("3");
       let pokeMap = pokeInf.map((poke) => {
-        let tipo = poke.types.data.map((types) => types.type.name);
-        // console.log(poke.types.data);
-        console.log("4");
-        console.log("5");
+        //   let tipo = poke.types.data.map((types) => types.type.name);
+        //   // console.log(poke.types.data);
+
         let pokeJson = {
           id: poke.data.id,
           name: poke.data.name,
           height: poke.data.height,
           weight: poke.data.weight,
-          hp: poke.stats[0].base_stat,
-          attack: poke.stats[1].base_stat,
-          defense: poke.stats[2].base_stat,
-          special_attack: poke.stats[3].base_stat,
-          special_defense: poke.stats[4].base_stat,
-          speed: poke.stats[5].base_stat,
-          front_defaul: poke.data.sprites.front_default,
-          front_shiny: poke.data.sprites.front_shiny,
-          Tipos: tipo,
+          hp: poke.data.stats[0].base_stat,
+          attack: poke.data.stats[1].base_stat,
+          defense: poke.data.stats[2].base_stat,
+          special_attack: poke.data.stats[3].base_stat,
+          special_defense: poke.data.stats[4].base_stat,
+          //     speed: poke.stats[5].base_stat,
+          //     front_defaul: poke.data.sprites.front_default,
+          //     front_shiny: poke.data.sprites.front_shiny,
+          //     Tipos: tipo,
         };
-        console.log("6");
         return pokeJson;
       });
+
       console.log(pokeMap);
     }
   } catch (err) {
