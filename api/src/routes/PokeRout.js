@@ -36,16 +36,17 @@ router.post("/", async (req, res, next) => {
           special_attack: poke.data.stats[3].base_stat,
           special_defense: poke.data.stats[4].base_stat,
           speed: poke.data.stats[5].base_stat,
-          front_defaul: poke.data.sprites.front_default,
+          front_default: poke.data.sprites.front_default,
           front_shiny: poke.data.sprites.front_shiny,
           Tipos: tipo,
         };
-        console.log(pokeJson);
+
         return pokeJson;
       });
-      for (props in pokeMap) {
-        console.log(pokeMap[props].name);
-      }
+      pokeMap.map((poke) => {
+        Pokemon.create(poke);
+      });
+      res.send(pokeMap);
     }
   } catch (err) {
     console.log(err);
