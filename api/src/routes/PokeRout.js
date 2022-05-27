@@ -23,7 +23,7 @@ router.post("/", async (req, res, next) => {
       );
 
       let pokeMap = pokeInf.map((poke) => {
-        let tipo = poke.data.types.map((types) => types.type.name);
+        let tipotipo = poke.data.types.map((types) => types.type.name);
         // let tipo = poke.data.types.map((types) => types.type.name);
         let pokeJson = {
           id: poke.data.id,
@@ -38,7 +38,7 @@ router.post("/", async (req, res, next) => {
           speed: poke.data.stats[5].base_stat,
           front_default: poke.data.sprites.front_default,
           front_shiny: poke.data.sprites.front_shiny,
-          Tipos: tipo,
+          Tipos: tipotipo,
         };
 
         return pokeJson;
@@ -57,9 +57,14 @@ router.post("/", async (req, res, next) => {
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-router.get("/allpokemons", (req, res, next) => {
-  const pokemons = Pokemon.findAll();
-  res.send(pokemons);
+router.get("/allpokemons", async (req, res, next) => {
+  try {
+    const pokemons = await Pokemon.findAll({ include: Tipos });
+
+    res.send(pokemons);
+  } catch (err) {
+    console.log(error);
+  }
 });
 router.post("/", (req, res, next) => {
   res.send("soy post /PokeRout");
@@ -71,5 +76,4 @@ router.delete("/", (req, res, next) => {
   res.send("soy delete /PokeRout");
 });
 
-module.exports = router;
 module.exports = router;

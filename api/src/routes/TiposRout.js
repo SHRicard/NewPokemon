@@ -10,16 +10,14 @@ const router = Router();
 //pidos los tipos y los creo en la base de datos si no existen
 router.post("/", async (req, res, next) => {
   try {
-    const existeTipos = "Los Tipos ya estan registrados";
     const tiposExist = await Tipos.findAll();
     if (!tiposExist.length) {
       const urlApiTipos = await axios.get(URL_API_TYPES);
-      console.log(urlApiTipos);
       urlApiTipos.data.results.map((tipos) => {
-        Tipos.create(tipos.name);
+        Tipos.create(tipos);
       });
     }
-    existeTipos = "Los Tipos Ya estan registrados";
+
     res.send(tiposExist);
   } catch (err) {
     console.log(err);
