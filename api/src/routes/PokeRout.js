@@ -46,6 +46,7 @@ router.post("/", async (req, res, next) => {
       pokeMap.map((poke) => {
         Pokemon.create(poke);
       });
+
       res.send(pokeMap);
     }
   } catch (err) {
@@ -56,8 +57,9 @@ router.post("/", async (req, res, next) => {
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
-router.get("/", (req, res, next) => {
-  res.send("soy get Ricardo");
+router.get("/allpokemons", (req, res, next) => {
+  const pokemons = Pokemon.findAll();
+  res.send(pokemons);
 });
 router.post("/", (req, res, next) => {
   res.send("soy post /PokeRout");
